@@ -126,6 +126,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Return the completed uri "http://content.guardianapis.com/search?&show-tags=contributor&q=%27tech%27&api-key=2bbbc59c-5b48-46a5-83d3-8435d3136348"
         return new NewsLoader(this, uriBuilder.toString());
 
+        //Test edit some thing to commit and push to github ...
+
     }
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
