@@ -2,11 +2,7 @@ package com.example.android.newsapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 
@@ -100,17 +96,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     // onCreateLoader instantiates and returns a new Loader for the given ID
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
 
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
-        String publicationDate = sharedPrefs.getString(
-                getString(R.string.settings_section_name),
-                getString(R.string.settings_section_default));
-        String orderBy = sharedPrefs.getString(
-                getString(R.string.settings_order_by_key),
-                getString(R.string.settings_order_by_default)
-        );
-
         // parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(GUARDINAPIS_REQUEST_URL);
 
@@ -120,8 +105,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Append query parameter and its value. For example, the `format=geojson`
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("limit", "10");
-        uriBuilder.appendQueryParameter("webPublicationDate", publicationDate);
-        uriBuilder.appendQueryParameter("orderby", orderBy);
 
         // Return the completed uri "http://content.guardianapis.com/search?&show-tags=contributor&q=%27tech%27&api-key=2bbbc59c-5b48-46a5-83d3-8435d3136348"
         return new NewsLoader(this, uriBuilder.toString());
@@ -152,23 +135,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
     }
-    @Override
-    // This method initialize the contents of the Activity's options menu.
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the Options Menu we specified in XML
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, settings_activity.class);
-            startActivity(settingsIntent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
 
 }
